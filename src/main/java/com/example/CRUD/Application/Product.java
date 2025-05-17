@@ -17,9 +17,10 @@ public class Product {
 
     @Column(length = 1000)
     private String description;
+
     public Product(){}
 
-    public Product(String name,double price,String description){
+    public Product(String name, double price, String description){
         this.name = name;
         this.price = price;
         this.description = description;

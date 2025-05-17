@@ -1,38 +1,63 @@
 package com.example.CRUD.Application;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/products")
+@Controller
+@RequestMapping("/products")
 public class ProductController {
-    @Autowired
-    private ProductService productService;
 
-    @PostMapping
-    public Product createProduct(@RequestBody Product product){
-        return productService.createProduct(product);
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping
-    public List<Product> getAllProduct(){
-        return productService.getAllProducts();
+    public String showProductList(Model model) {
+        model.addAttribute("products", productService.getAllProducts());
+        return "list"; // Changed from "products/list"
     }
 
-    @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id){
-        return productService.getProductById(id);
+    @GetMapping("/add")
+    public String showAddForm(Product product) {
+        return "add"; // Changed from "products/add"
     }
 
-    @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product product){
-        return productService.updateProduct(id,product);
+    @PostMapping("/add")
+    public String addProduct(@Valid Product product, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "add"; // Changed from "products/add"
+        }
+        productService.createProduct(product);
+        return "redirect:/products";
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id){
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Product product = productService.getProductById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
+        model.addAttribute("product", product);
+        return "edit"; // Changed from "products/edit"
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateProduct(@PathVariable Long id, @Valid Product product,
+                                BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            product.setId(id);
+            return "edit"; // Changed from "products/edit"
+        }
+        productService.updateProduct(id, product);
+        return "redirect:/products";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
+        return "redirect:/products";
     }
 }
