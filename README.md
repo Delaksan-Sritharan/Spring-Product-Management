@@ -15,6 +15,11 @@ This is a simple web application for managing products. It allows users to creat
     * MySQL
 * **Build Tool:**
     * Maven: For project management and building.
+ 
+## Product
+<img width="1440" alt="Screenshot 2025-05-17 at 11 07 22 PM" src="https://github.com/user-attachments/assets/a1976cd4-5a71-46db-97e1-69a7f35d6b56" />
+<img width="1440" alt="Screenshot 2025-05-17 at 11 07 38 PM" src="https://github.com/user-attachments/assets/f7046d97-4571-40b5-87c0-609b139e012b" />
+<img width="1440" alt="Screenshot 2025-05-17 at 11 08 26 PM" src="https://github.com/user-attachments/assets/d8f3e846-dce8-4e29-a60b-852f8fb5b426" />
 
 ## Features
 
